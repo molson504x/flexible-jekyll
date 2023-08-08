@@ -2,10 +2,10 @@ name: Build SCSS
 
 on:
   push:
-    paths: '**.scss'
+    paths: ['**.scss']
   pull_request:
     branches: [master]
-    paths: '**.scss'
+    paths: ['**.scss']
 
 permissions:
   contents: write
