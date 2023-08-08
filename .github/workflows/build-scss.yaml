@@ -14,9 +14,19 @@ jobs:
   Build-SCSS:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Branch Name
+        id: extract_branch
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "push"]]; then
+            echo "::set-output name=branch::$(echo ${GITHUB_REF##*/})"
+          elif [[ "$GITHUB_EVENT_NAME}" == "pull_request"]]; then
+            echo "::set-output name=branch::$(echo $GITHUB_BASE_REF)"
+          else
+            echo "::set-output name=branch::INVALID_EVENT_BRANCH_UNKNOWN"
+          fi
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ steps.extract_branch.outputs.branch }}
       - uses: gha-utilities/sass-build@v0.5.1
         with:
           source: assets/css/scss/main.scss
