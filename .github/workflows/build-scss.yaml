@@ -26,7 +26,7 @@ jobs:
           fi
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref ||  github.ref_name }}
       - uses: gha-utilities/sass-build@v0.5.1
         with:
           source: assets/css/scss/main.scss
